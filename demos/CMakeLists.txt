@@ -17,23 +17,11 @@ macro(CREATE_DEMO _target _sources)
     endif()
     target_link_libraries(${_target}
         ${OPENGL_LIBRARY}
-        ${FREETYPE_LIBRARIES}
         ${MATH_LIBRARY}
-        ${GLEW_LIBRARY}
     )
 
-    if(MSVC AND NOT (MSVC_VERSION LESS 1900))
-        # prevent error LNK2019: unresolved external symbol _sprintf referenced in function __bdf_parse_properties
-        # see http://stackoverflow.com/a/32418900/469659
-        target_link_libraries(${_target} "legacy_stdio_definitions.lib")
-    endif()
 endmacro()
 
-if(WIN32 OR WIN64)
-    set(ENV{ANT_TWEAK_BAR_ROOT}
-        ${CMAKE_CURRENT_SOURCE_DIR}/../windows/AntTweakBar
-    )
-endif()
 
 # Find dependencies
 find_package(AntTweakBar)
@@ -74,7 +62,6 @@ add_custom_target(generate-embedded-font
 create_demo(embedded-font embedded-font.c)
 add_dependencies(embedded-font generate-embedded-font)
 
-
 create_demo(cartoon cartoon.c)
 
 if(FONTCONFIG_FOUND)
@@ -110,10 +97,3 @@ file(COPY ../fonts DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ../data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ../shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-if(MSVC)
-    foreach(config ${CMAKE_CONFIGURATION_TYPES})
-        file(COPY ../fonts DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${config})
-        file(COPY ../data DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${config})
-        file(COPY ../shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${config})
-    endforeach()
-endif()
