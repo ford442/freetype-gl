@@ -23,7 +23,6 @@ add_definitions("-DSOURCE_PATH_SIZE=${SOURCE_PATH_SIZE}")
 message(STATUS "Building for ${CMAKE_SYSTEM_NAME} target system")
 message(STATUS "Building with ${CMAKE_C_COMPILER_ID} compiler")
 
-set(freetype-gl_WITH_GLEW_DEFAULT ON)
 add_compile_options("-s" "USE_FREETYPE=1")
 
 
@@ -190,7 +189,6 @@ if(freetype-gl_BUILD_MAKEFONT)
         freetype-gl
         ${OPENGL_LIBRARY}
         ${MATH_LIBRARY}
-        ${GLEW_LIBRARY}
     )
 
     if(MSVC AND NOT (MSVC_VERSION LESS 1900))
