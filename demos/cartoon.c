@@ -90,40 +90,26 @@ void init( void ){
     mat4_set_identity( &view );
 }
 
-void display( GLFWwindow* window ){
+void display(){
     
-    glUseProgram( shader );
-    {
         glUniform1i( glGetUniformLocation( shader, "texture" ),0 );
         glUniformMatrix4fv( glGetUniformLocation( shader, "model" ),1, 0, model.data);
         glUniformMatrix4fv( glGetUniformLocation( shader, "view" ),1, 0, view.data);
         glUniformMatrix4fv( glGetUniformLocation( shader, "projection" ),1, 0, projection.data);
         vertex_buffer_render( buffer, GL_TRIANGLES );
-    }
 
     glfwSwapBuffers( window );
 }
 
 
-
-
 int main( int argc, char **argv ){
     char* screenshot_path = NULL;
+    
     if (!glfwInit( ))
     {
         exit( EXIT_FAILURE );
     }
 
-#ifndef __APPLE__
-    GLenum err = glewInit();
-    if (GLEW_OK != err)
-    {
-        /* Problem: glewInit failed, something is seriously wrong. */
-        fprintf( stderr, "Error: %s\n", glewGetErrorString(err) );
-        exit( EXIT_FAILURE );
-    }
-    fprintf( stderr, "Using GLEW %s\n", glewGetString(GLEW_VERSION) );
-#endif
 
     init();
     glClearColor( 1.0, 1.0, 1.0, 1.0 );
@@ -132,9 +118,7 @@ int main( int argc, char **argv ){
     glEnable( GL_BLEND );
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
     mat4_set_orthographic( &projection, 0, width, 0, height, -1, 1);
+        glUseProgram( shader );
 
-
-    
-    
     return EXIT_SUCCESS;
 }
