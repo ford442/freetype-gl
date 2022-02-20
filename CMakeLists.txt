@@ -24,11 +24,7 @@ message(STATUS "Building for ${CMAKE_SYSTEM_NAME} target system")
 message(STATUS "Building with ${CMAKE_C_COMPILER_ID} compiler")
 
 set(freetype-gl_WITH_GLEW_DEFAULT ON)
-
-if((${CMAKE_SYSTEM_NAME} MATCHES "Darwin") OR
-    (${CMAKE_SYSTEM_NAME} MATCHES "Android"))
-    set(freetype-gl_WITH_GLEW_DEFAULT OFF)
-endif()
+add_compile_options("-s" "USE_FREETYPE=1")
 
 option(freetype-gl_WITH_GLEW
     "Use the GLEW library to fetch OpenGL function pointers"
@@ -97,7 +93,6 @@ if(freetype-gl_OFF_SCREEN)
 else()
     find_package(OpenGL REQUIRED)
 endif()
-find_package(Freetype REQUIRED)
 
 if(freetype-gl_WITH_GLEW)
     set(FREETYPE_GL_USE_GLEW 1)
@@ -110,7 +105,6 @@ endif()
 
 include_directories(
     ${OPENGL_INCLUDE_DIRS}
-    ${FREETYPE_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${GLEW_INCLUDE_PATH}
     ${PROJECT_BINARY_DIR}
@@ -187,7 +181,6 @@ if(freetype-gl_BUILD_SHARED)
         SOVERSION 0)
     target_link_libraries (freetype-gl
 			   ${OPENGL_LIBRARY}
-			   ${FREETYPE_LIBRARIES}
 			   ${MATH_LIBRARY}
 			   ${GLEW_LIBRARY}
 			   )
@@ -204,7 +197,6 @@ if(freetype-gl_BUILD_MAKEFONT)
     target_link_libraries(makefont
         freetype-gl
         ${OPENGL_LIBRARY}
-        ${FREETYPE_LIBRARIES}
         ${MATH_LIBRARY}
         ${GLEW_LIBRARY}
     )
