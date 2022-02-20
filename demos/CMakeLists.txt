@@ -16,7 +16,6 @@ macro(CREATE_DEMO _target _sources)
         )
     endif()
     target_link_libraries(${_target}
-        glfw
         ${OPENGL_LIBRARY}
         ${FREETYPE_LIBRARIES}
         ${MATH_LIBRARY}
@@ -37,7 +36,6 @@ if(WIN32 OR WIN64)
 endif()
 
 # Find dependencies
-find_package(glfw3 3.2 REQUIRED)
 find_package(AntTweakBar)
 find_package(Fontconfig)
 
@@ -76,21 +74,8 @@ add_custom_target(generate-embedded-font
 create_demo(embedded-font embedded-font.c)
 add_dependencies(embedded-font generate-embedded-font)
 
-create_demo(texture texture.c)
-create_demo(font font.c)
-create_demo(benchmark benchmark.c)
-create_demo(console console.c)
-create_demo(cube cube.c)
-create_demo(glyph glyph.c)
+
 create_demo(cartoon cartoon.c)
-create_demo(outline outline.c)
-create_demo(lcd lcd.c)
-create_demo(gamma gamma.c)
-create_demo(ansi ansi.c)
-create_demo(subpixel subpixel.c)
-create_demo(distance-field distance-field.c)
-create_demo(distance-field-2 distance-field-2.c)
-create_demo(distance-field-3 distance-field-3.c)
 
 if(FONTCONFIG_FOUND)
     include_directories(${FONTCONFIG_INCLUDE_DIR})
