@@ -26,9 +26,7 @@ message(STATUS "Building with ${CMAKE_C_COMPILER_ID} compiler")
 set(freetype-gl_WITH_GLEW_DEFAULT ON)
 add_compile_options("-s" "USE_FREETYPE=1")
 
-option(freetype-gl_WITH_GLEW
-    "Use the GLEW library to fetch OpenGL function pointers"
-    ${freetype-gl_WITH_GLEW_DEFAULT})
+
 option(freetype-gl_WITH_GLAD "Use the GLAD gl loader" OFF)
 option(freetype-gl_USE_VAO "Use a VAO to render a vertex_buffer instance (required for forward compatible OpenGL 3.0 contexts)" OFF)
 option(freetype-gl_BUILD_DEMOS "Build the freetype-gl example programs" ON)
@@ -94,10 +92,6 @@ else()
     find_package(OpenGL REQUIRED)
 endif()
 
-if(freetype-gl_WITH_GLEW)
-    set(FREETYPE_GL_USE_GLEW 1)
-    find_package(GLEW REQUIRED)
-endif()
 
 if(freetype-gl_WITH_GLAD)
     set(GL_WITH_GLAD 1)
@@ -106,7 +100,6 @@ endif()
 include_directories(
     ${OPENGL_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${GLEW_INCLUDE_PATH}
     ${PROJECT_BINARY_DIR}
 )
 
@@ -182,7 +175,6 @@ if(freetype-gl_BUILD_SHARED)
     target_link_libraries (freetype-gl
 			   ${OPENGL_LIBRARY}
 			   ${MATH_LIBRARY}
-			   ${GLEW_LIBRARY}
 			   )
 else()
     add_library(freetype-gl STATIC
